@@ -90,26 +90,23 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Download Linux artifacts
+      - name: Download all build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: wsdl-caller-debian-linux
           path: release-artifacts
-
-      - name: Download Windows artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: wsdl-caller-windows
-          path: release-artifacts
+          merge-multiple: true
 
       - name: List downloaded release assets
-        run: ls -la release-artifacts
+        run: |
+          echo "Listing release-artifacts directory:"
+          ls -laR release-artifacts
 
       - name: Create GitHub Release and attach binaries
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            release-artifacts/*.deb
-            release-artifacts/*.AppImage
-            release-artifacts/*.exe
+            release-artifacts/**/*.deb
+            release-artifacts/**/*.AppImage
+            release-artifacts/**/*.exe
+          fail_on_unmatched_files: true
           generate_release_notes: true
