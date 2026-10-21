@@ -2,6 +2,7 @@
   "name": "wsdl-caller",
   "version": "1.0.0",
   "description": "Desktop WSDL explorer and SOAP client alternative to Wizdler",
+  "desktopName": "wsdl-caller.desktop",
   "main": "dist/main/main.js",
   "scripts": {
     "test": "npx esbuild tests/testDummyWsdl.ts --bundle --platform=node | node",
@@ -41,7 +42,6 @@
         "AppImage"
       ],
       "category": "Development",
-      "desktopName": "wsdl-caller.desktop",
       "syncDesktopName": true
     },
     "deb": {

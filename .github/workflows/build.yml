@@ -37,7 +37,7 @@ jobs:
         run: npm run build
 
       - name: Package Debian (.deb) & AppImage
-        run: npx electron-builder --linux deb AppImage
+        run: npx electron-builder --linux deb AppImage --publish never
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -70,7 +70,7 @@ jobs:
         run: npm run build
 
       - name: Package Windows Standalone (.exe) & Installer (.exe)
-        run: npx electron-builder --win portable nsis
+        run: npx electron-builder --win portable nsis --publish never
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
