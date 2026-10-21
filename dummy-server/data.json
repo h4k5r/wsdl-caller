@@ -17,7 +17,7 @@
       "title": "Ultra Wireless Mechanical Keyboard",
       "price": 129.99,
       "inStock": true,
-      "stockCount": 41,
+      "stockCount": 40,
       "rating": 4.8,
       "category": "Peripherals"
     },
@@ -99,6 +99,16 @@
       "totalAmount": 129.99,
       "status": "CONFIRMED",
       "createdAt": "2026-10-21T20:26:45.148Z"
+    },
+    {
+      "orderId": "ORD-110251",
+      "customerName": "John Doe",
+      "customerEmail": "john@example.com",
+      "productId": "KB-99",
+      "quantity": 1,
+      "totalAmount": 129.99,
+      "status": "CONFIRMED",
+      "createdAt": "2026-10-21T20:50:30.946Z"
     }
   ]
 }

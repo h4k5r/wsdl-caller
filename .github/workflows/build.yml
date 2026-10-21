@@ -1,0 +1,115 @@
+name: Build & Package Desktop Apps
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-linux:
+    name: Build Debian (.deb) & Linux AppImage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build renderer and main process
+        run: npm run build
+
+      - name: Package Debian (.deb) & AppImage
+        run: npx electron-builder --linux deb AppImage
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Debian & Linux artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wsdl-caller-debian-linux
+          path: |
+            release/*.deb
+            release/*.AppImage
+          if-no-files-found: error
+
+  build-windows:
+    name: Build Windows Standalone (.exe) & Installer
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build renderer and main process
+        run: npm run build
+
+      - name: Package Windows Standalone (.exe) & Installer (.exe)
+        run: npx electron-builder --win portable nsis
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Windows artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wsdl-caller-windows
+          path: |
+            release/*.exe
+          if-no-files-found: error
+
+  release:
+    name: Publish GitHub Release
+    needs: [build-linux, build-windows]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download Linux artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: wsdl-caller-debian-linux
+          path: release-artifacts
+
+      - name: Download Windows artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: wsdl-caller-windows
+          path: release-artifacts
+
+      - name: List downloaded release assets
+        run: ls -la release-artifacts
+
+      - name: Create GitHub Release and attach binaries
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release-artifacts/*.deb
+            release-artifacts/*.AppImage
+            release-artifacts/*.exe
+          generate_release_notes: true

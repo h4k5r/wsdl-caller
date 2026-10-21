@@ -17,8 +17,68 @@
     "build:preload": "esbuild src/preload/preload.ts --bundle --platform=node --target=node20 --outfile=dist/preload/preload.js --external:electron",
     "build:renderer": "vite build",
     "build": "npm run build:main && npm run build:preload && npm run build:renderer",
+    "package": "npm run build && electron-builder",
+    "package:dir": "npm run build && electron-builder --dir",
+    "package:linux": "npm run build && electron-builder --linux deb AppImage",
+    "package:deb": "npm run build && electron-builder --linux deb",
+    "package:win": "npm run build && electron-builder --win nsis portable",
     "start": "electron --no-sandbox .",
     "preview": "vite preview"
+  },
+  "build": {
+    "appId": "com.wsdlcaller.app",
+    "productName": "WSDL Caller",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "linux": {
+      "target": [
+        "deb",
+        "AppImage"
+      ],
+      "category": "Development",
+      "desktopName": "wsdl-caller.desktop",
+      "syncDesktopName": true
+    },
+    "deb": {
+      "synopsis": "Desktop WSDL explorer and SOAP client alternative to Wizdler",
+      "description": "Desktop alternative to Wizdler for discovering, inspecting, and testing SOAP web services without CORS restrictions.",
+      "depends": [
+        "libnotify4",
+        "libxtst6",
+        "libnss3"
+      ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "artifactName": "${productName}-${version}-windows-setup.exe"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-windows-standalone.exe"
+    }
   },
   "keywords": [
     "wsdl",
@@ -27,7 +87,7 @@
     "electron",
     "api-client"
   ],
-  "author": "",
+  "author": "WSDL Caller Contributors <support@wsdlcaller.local>",
   "license": "MIT",
   "dependencies": {
     "@codemirror/lang-xml": "^6.1.0",
@@ -48,6 +108,7 @@
     "concurrently": "^9.2.1",
     "cross-env": "^10.1.0",
     "electron": "^40.8.0",
+    "electron-builder": "^26.15.3",
     "esbuild": "^0.27.3",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18",

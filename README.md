@@ -96,6 +96,42 @@ npm run start:all
 
 ---
 
+## Packaging & Standalone Binaries
+
+Build standalone executables and distributable packages using `electron-builder`:
+
+```bash
+# Package Debian Linux (.deb) & AppImage
+npm run package:deb
+# or
+npm run package:linux
+
+# Package Windows Standalone (.exe) & NSIS Setup Installer
+npm run package:win
+
+# Pack unpacked directory for local verification
+npm run package:dir
+```
+
+All built artifacts will be located in the `release/` directory:
+- **Debian (.deb):** `release/wsdl-caller_<version>_amd64.deb`
+- **Linux AppImage:** `release/WSDL-Caller-<version>.AppImage`
+- **Windows Standalone (.exe):** `release/WSDL-Caller-<version>-windows-standalone.exe` (portable, no install required)
+- **Windows Setup (.exe):** `release/WSDL-Caller-<version>-windows-setup.exe`
+
+---
+
+## Continuous Integration & Automated Builds (GitHub Actions)
+
+A full multi-platform CI/CD pipeline is configured in [`.github/workflows/build.yml`](.github/workflows/build.yml):
+
+- **Triggers:** Automatically runs on pushes to `main`/`master`, pull requests, tag pushes (`v*`), or via manual trigger (`workflow_dispatch`).
+- **Linux Job (`ubuntu-latest`):** Builds the Debian `.deb` package and Linux `AppImage`.
+- **Windows Job (`windows-latest`):** Builds the Windows standalone portable executable (`.exe`) and NSIS installer (`.exe`).
+- **Release Automation:** Pushing a version tag (e.g. `git tag v1.0.0 && git push origin v1.0.0`) automatically creates a GitHub Release and attaches the Debian `.deb` and Windows standalone `.exe` binaries as downloadable assets.
+
+---
+
 ## Built With
 
 - **Shell:** Electron

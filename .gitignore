@@ -1,5 +1,9 @@
 node_modules/
 dist/
+release/
+dist-electron/
+test-results/
+.idea/
 .DS_Store
 *.log
 .wsdl_caller_history.json
