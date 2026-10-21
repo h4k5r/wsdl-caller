@@ -1,0 +1,104 @@
+{
+  "apiUsers": [
+    {
+      "username": "admin",
+      "apiKey": "secret123",
+      "role": "administrator"
+    },
+    {
+      "username": "tester",
+      "apiKey": "soap2026",
+      "role": "qa_engineer"
+    }
+  ],
+  "products": [
+    {
+      "id": "KB-99",
+      "title": "Ultra Wireless Mechanical Keyboard",
+      "price": 129.99,
+      "inStock": true,
+      "stockCount": 41,
+      "rating": 4.8,
+      "category": "Peripherals"
+    },
+    {
+      "id": "MS-01",
+      "title": "Ergonomic Precision Mouse",
+      "price": 59.95,
+      "inStock": true,
+      "stockCount": 109,
+      "rating": 4.6,
+      "category": "Peripherals"
+    },
+    {
+      "id": "MN-4K",
+      "title": "32-inch 4K UHD Developer Display",
+      "price": 449,
+      "inStock": true,
+      "stockCount": 18,
+      "rating": 4.9,
+      "category": "Displays"
+    },
+    {
+      "id": "HD-700",
+      "title": "Noise-Cancelling Studio Headphones",
+      "price": 199.5,
+      "inStock": false,
+      "stockCount": 0,
+      "rating": 4.7,
+      "category": "Audio"
+    }
+  ],
+  "orders": [
+    {
+      "orderId": "ORD-10001",
+      "customerName": "Alice Johnson",
+      "customerEmail": "alice@example.com",
+      "productId": "KB-99",
+      "quantity": 1,
+      "totalAmount": 129.99,
+      "status": "DELIVERED",
+      "createdAt": "2026-10-15T10:30:00.000Z"
+    },
+    {
+      "orderId": "ORD-666697",
+      "customerName": "John Doe",
+      "customerEmail": "john@example.com",
+      "productId": "MS-01",
+      "quantity": 2,
+      "totalAmount": 119.9,
+      "status": "CONFIRMED",
+      "createdAt": "2026-10-21T20:13:01.352Z"
+    },
+    {
+      "orderId": "ORD-540149",
+      "customerName": "John Doe",
+      "customerEmail": "john@example.com",
+      "productId": "MS-01",
+      "quantity": 2,
+      "totalAmount": 119.9,
+      "status": "CONFIRMED",
+      "createdAt": "2026-10-21T20:13:11.420Z"
+    },
+    {
+      "orderId": "ORD-130497",
+      "customerName": "John Doe",
+      "customerEmail": "john@example.com",
+      "productId": "MS-01",
+      "quantity": 2,
+      "totalAmount": 119.9,
+      "status": "CONFIRMED",
+      "createdAt": "2026-10-21T20:13:43.134Z"
+    },
+    {
+      "orderId": "ORD-822717",
+      "customerName": "John Doe",
+      "customerEmail": "john@example.com",
+      "productId": "KB-99",
+      "quantity": 1,
+      "totalAmount": 129.99,
+      "status": "CONFIRMED",
+      "createdAt": "2026-10-21T20:26:45.148Z"
+    }
+  ]
+}

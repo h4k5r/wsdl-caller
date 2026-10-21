@@ -1,0 +1,57 @@
+{
+  "name": "wsdl-caller",
+  "version": "1.0.0",
+  "description": "Desktop WSDL explorer and SOAP client alternative to Wizdler",
+  "main": "dist/main/main.js",
+  "scripts": {
+    "test": "npx esbuild tests/testDummyWsdl.ts --bundle --platform=node | node",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "dummy-server": "node dummy-server/server.js",
+    "start:dummy": "node dummy-server/server.js",
+    "dummy": "node dummy-server/server.js",
+    "start:all": "concurrently -k -n \"server,app\" -c \"cyan,magenta\" \"npm run dummy-server\" \"npm start\"",
+    "dev:all": "concurrently -k -n \"server,app\" -c \"cyan,magenta\" \"npm run dummy-server\" \"npm run dev\"",
+    "dev": "concurrently -k \"vite\" \"wait-on tcp:5173 && npm run build:main && npm run build:preload && cross-env NODE_ENV=development electron --no-sandbox .\"",
+    "build:main": "esbuild src/main/main.ts --bundle --platform=node --target=node20 --outfile=dist/main/main.js --external:electron",
+    "build:preload": "esbuild src/preload/preload.ts --bundle --platform=node --target=node20 --outfile=dist/preload/preload.js --external:electron",
+    "build:renderer": "vite build",
+    "build": "npm run build:main && npm run build:preload && npm run build:renderer",
+    "start": "electron --no-sandbox .",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "wsdl",
+    "soap",
+    "wizdler",
+    "electron",
+    "api-client"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@codemirror/lang-xml": "^6.1.0",
+    "@uiw/react-codemirror": "^4.23.11",
+    "fast-xml-parser": "^5.3.4",
+    "lucide-react": "^1.16.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@tailwindcss/vite": "^4.1.18",
+    "@types/node": "^25.3.3",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.4",
+    "autoprefixer": "^10.4.24",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "electron": "^40.8.0",
+    "esbuild": "^0.27.3",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3",
+    "wait-on": "^9.0.4"
+  }
+}

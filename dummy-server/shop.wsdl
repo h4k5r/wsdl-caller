@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+                  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                  xmlns:tns="http://dummy.shop.com/webservices"
+                  targetNamespace="http://dummy.shop.com/webservices">
+
+  <!-- TYPES / SCHEMA DEFINITION -->
+  <wsdl:types>
+    <xs:schema targetNamespace="http://dummy.shop.com/webservices" elementFormDefault="qualified">
+
+      <!-- Common Auth Credentials in Body -->
+      <xs:complexType name="CredentialsType">
+        <xs:sequence>
+          <xs:element name="username" type="xs:string" />
+          <xs:element name="apiKey" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+
+      <!-- 1. GetProductDetails -->
+      <xs:element name="GetProductDetailsRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="auth" type="tns:CredentialsType" />
+            <xs:element name="productId" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="GetProductDetailsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="productId" type="xs:string" />
+            <xs:element name="title" type="xs:string" />
+            <xs:element name="price" type="xs:double" />
+            <xs:element name="inStock" type="xs:boolean" />
+            <xs:element name="stockCount" type="xs:int" />
+            <xs:element name="rating" type="xs:float" />
+            <xs:element name="category" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <!-- 2. ListProducts -->
+      <xs:complexType name="ProductItemType">
+        <xs:sequence>
+          <xs:element name="id" type="xs:string" />
+          <xs:element name="title" type="xs:string" />
+          <xs:element name="price" type="xs:double" />
+          <xs:element name="inStock" type="xs:boolean" />
+          <xs:element name="category" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="ProductListType">
+        <xs:sequence>
+          <xs:element name="product" type="tns:ProductItemType" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:element name="ListProductsRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="auth" type="tns:CredentialsType" />
+            <xs:element name="category" type="xs:string" minOccurs="0" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="ListProductsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="totalFound" type="xs:int" />
+            <xs:element name="products" type="tns:ProductListType" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <!-- 3. PlaceOrder -->
+      <xs:complexType name="CustomerType">
+        <xs:sequence>
+          <xs:element name="name" type="xs:string" />
+          <xs:element name="email" type="xs:string" />
+          <xs:element name="vipMember" type="xs:boolean" />
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="OrderItemType">
+        <xs:sequence>
+          <xs:element name="productId" type="xs:string" />
+          <xs:element name="quantity" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:element name="PlaceOrderRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="auth" type="tns:CredentialsType" />
+            <xs:element name="customer" type="tns:CustomerType" />
+            <xs:element name="item" type="tns:OrderItemType" />
+            <xs:element name="shippingAddress" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="PlaceOrderResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="orderId" type="xs:string" />
+            <xs:element name="status" type="xs:string" />
+            <xs:element name="productTitle" type="xs:string" />
+            <xs:element name="quantity" type="xs:int" />
+            <xs:element name="totalAmount" type="xs:double" />
+            <xs:element name="estimatedDelivery" type="xs:date" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <!-- 4. CalculateDiscount -->
+      <xs:element name="CalculateDiscountRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="auth" type="tns:CredentialsType" />
+            <xs:element name="price" type="xs:double" />
+            <xs:element name="discountPercent" type="xs:double" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="CalculateDiscountResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="discountedPrice" type="xs:double" />
+            <xs:element name="savedAmount" type="xs:double" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <!-- 5. TriggerFault -->
+      <xs:element name="TriggerFaultRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="auth" type="tns:CredentialsType" />
+            <xs:element name="reason" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="TriggerFaultResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="message" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+    </xs:schema>
+  </wsdl:types>
+
+  <!-- MESSAGES -->
+  <wsdl:message name="GetProductDetailsInput">
+    <wsdl:part name="parameters" element="tns:GetProductDetailsRequest" />
+  </wsdl:message>
+  <wsdl:message name="GetProductDetailsOutput">
+    <wsdl:part name="parameters" element="tns:GetProductDetailsResponse" />
+  </wsdl:message>
+
+  <wsdl:message name="ListProductsInput">
+    <wsdl:part name="parameters" element="tns:ListProductsRequest" />
+  </wsdl:message>
+  <wsdl:message name="ListProductsOutput">
+    <wsdl:part name="parameters" element="tns:ListProductsResponse" />
+  </wsdl:message>
+
+  <wsdl:message name="PlaceOrderInput">
+    <wsdl:part name="parameters" element="tns:PlaceOrderRequest" />
+  </wsdl:message>
+  <wsdl:message name="PlaceOrderOutput">
+    <wsdl:part name="parameters" element="tns:PlaceOrderResponse" />
+  </wsdl:message>
+
+  <wsdl:message name="CalculateDiscountInput">
+    <wsdl:part name="parameters" element="tns:CalculateDiscountRequest" />
+  </wsdl:message>
+  <wsdl:message name="CalculateDiscountOutput">
+    <wsdl:part name="parameters" element="tns:CalculateDiscountResponse" />
+  </wsdl:message>
+
+  <wsdl:message name="TriggerFaultInput">
+    <wsdl:part name="parameters" element="tns:TriggerFaultRequest" />
+  </wsdl:message>
+  <wsdl:message name="TriggerFaultOutput">
+    <wsdl:part name="parameters" element="tns:TriggerFaultResponse" />
+  </wsdl:message>
+
+  <!-- PORT TYPE -->
+  <wsdl:portType name="ShopPortType">
+    <wsdl:operation name="GetProductDetails">
+      <wsdl:documentation>Retrieves real catalogue item details by ID from JSON data store (Requires auth).</wsdl:documentation>
+      <wsdl:input message="tns:GetProductDetailsInput" />
+      <wsdl:output message="tns:GetProductDetailsOutput" />
+    </wsdl:operation>
+
+    <wsdl:operation name="ListProducts">
+      <wsdl:documentation>Lists products from JSON data store with optional category filter (Requires auth).</wsdl:documentation>
+      <wsdl:input message="tns:ListProductsInput" />
+      <wsdl:output message="tns:ListProductsOutput" />
+    </wsdl:operation>
+
+    <wsdl:operation name="PlaceOrder">
+      <wsdl:documentation>Persists order into JSON store and updates inventory in real time (Requires auth).</wsdl:documentation>
+      <wsdl:input message="tns:PlaceOrderInput" />
+      <wsdl:output message="tns:PlaceOrderOutput" />
+    </wsdl:operation>
+
+    <wsdl:operation name="CalculateDiscount">
+      <wsdl:documentation>Calculates price after applying percentage discount (Requires auth).</wsdl:documentation>
+      <wsdl:input message="tns:CalculateDiscountInput" />
+      <wsdl:output message="tns:CalculateDiscountOutput" />
+    </wsdl:operation>
+
+    <wsdl:operation name="TriggerFault">
+      <wsdl:documentation>Simulates a SOAP Fault error response.</wsdl:documentation>
+      <wsdl:input message="tns:TriggerFaultInput" />
+      <wsdl:output message="tns:TriggerFaultOutput" />
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <!-- BINDING 1: SOAP 1.1 -->
+  <wsdl:binding name="ShopSoap11Binding" type="tns:ShopPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+
+    <wsdl:operation name="GetProductDetails">
+      <soap:operation soapAction="http://dummy.shop.com/GetProductDetails" />
+      <wsdl:input><soap:body use="literal" /></wsdl:input>
+      <wsdl:output><soap:body use="literal" /></wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="ListProducts">
+      <soap:operation soapAction="http://dummy.shop.com/ListProducts" />
+      <wsdl:input><soap:body use="literal" /></wsdl:input>
+      <wsdl:output><soap:body use="literal" /></wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="PlaceOrder">
+      <soap:operation soapAction="http://dummy.shop.com/PlaceOrder" />
+      <wsdl:input><soap:body use="literal" /></wsdl:input>
+      <wsdl:output><soap:body use="literal" /></wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="CalculateDiscount">
+      <soap:operation soapAction="http://dummy.shop.com/CalculateDiscount" />
+      <wsdl:input><soap:body use="literal" /></wsdl:input>
+      <wsdl:output><soap:body use="literal" /></wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="TriggerFault">
+      <soap:operation soapAction="http://dummy.shop.com/TriggerFault" />
+      <wsdl:input><soap:body use="literal" /></wsdl:input>
+      <wsdl:output><soap:body use="literal" /></wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <!-- BINDING 2: SOAP 1.2 -->
+  <wsdl:binding name="ShopSoap12Binding" type="tns:ShopPortType">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+
+    <wsdl:operation name="GetProductDetails">
+      <soap12:operation soapAction="http://dummy.shop.com/GetProductDetails" />
+      <wsdl:input><soap12:body use="literal" /></wsdl:input>
+      <wsdl:output><soap12:body use="literal" /></wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="ListProducts">
+      <soap12:operation soapAction="http://dummy.shop.com/ListProducts" />
+      <wsdl:input><soap12:body use="literal" /></wsdl:input>
+      <wsdl:output><soap12:body use="literal" /></wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="PlaceOrder">
+      <soap12:operation soapAction="http://dummy.shop.com/PlaceOrder" />
+      <wsdl:input><soap12:body use="literal" /></wsdl:input>
+      <wsdl:output><soap12:body use="literal" /></wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="CalculateDiscount">
+      <soap12:operation soapAction="http://dummy.shop.com/CalculateDiscount" />
+      <wsdl:input><soap12:body use="literal" /></wsdl:input>
+      <wsdl:output><soap12:body use="literal" /></wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="TriggerFault">
+      <soap12:operation soapAction="http://dummy.shop.com/TriggerFault" />
+      <wsdl:input><soap12:body use="literal" /></wsdl:input>
+      <wsdl:output><soap12:body use="literal" /></wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <!-- SERVICE & ENDPOINTS -->
+  <wsdl:service name="ShopService">
+    <wsdl:documentation>Enterprise E-Commerce SOAP Service with Body Authentication and JSON Data Store.</wsdl:documentation>
+    <wsdl:port name="ShopSoap11Port" binding="tns:ShopSoap11Binding">
+      <soap:address location="http://localhost:8001/ws/shop" />
+    </wsdl:port>
+    <wsdl:port name="ShopSoap12Port" binding="tns:ShopSoap12Binding">
+      <soap12:address location="http://localhost:8001/ws/shop" />
+    </wsdl:port>
+  </wsdl:service>
+
+</wsdl:definitions>
