@@ -1,5 +1,7 @@
 # WSDL Caller (Desktop Wizdler Alternative)
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 A modern, lightweight cross-platform Electron desktop application for discovering, inspecting, and executing SOAP web services from WSDL URLs or local files — without browser CORS limitations or SSL hurdles.
 
 ---
@@ -139,3 +141,10 @@ A full multi-platform CI/CD pipeline is configured in [`.github/workflows/build.
 - **XML Editor:** `@uiw/react-codemirror` with `@codemirror/lang-xml`
 - **WSDL / XML Engine:** `fast-xml-parser`
 - **Bundler:** Vite + esbuild
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
